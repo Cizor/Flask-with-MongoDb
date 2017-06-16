@@ -1,0 +1,18 @@
+<!doctype html>
+
+<html>
+	<body>
+		<table border = 1>
+			{% for i in result %}
+				{% for key,val in i.iteritems() %}
+					{% if key != "_id" %}	
+						<tr>
+							<th> {{ key }} </th>
+							<td> {{ val }} </td>
+						</tr>
+					{% endif %}
+				{% endfor %}
+			{% endfor %}
+		</table>
+	</body>
+</html>
