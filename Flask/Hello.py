@@ -73,6 +73,10 @@ def get_stringid():
 		user = request.args.get('nm')
 		return redirect(url_for('mongo_test',stringid = user))
 
+@app.route('/formcheck/')
+def launch_form():
+	return render_template('form.html')
+
 
 #Decorator to add URL Rules
 #app.add_url_rule('/hello/<name>','hello',hello_world)
