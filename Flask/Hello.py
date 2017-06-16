@@ -25,7 +25,7 @@ def hello_guest(name):
 def success(name):
 	return 'Welcome %s' % name
 
-@app.route('/login',methods = ['POST','GET'])
+@app.route('/fail',methods = ['POST','GET'])
 def login():
 	if request.method == 'POST':
 		user = request.form['nm']
@@ -47,13 +47,13 @@ def template_html():
 def user_html(user):
 	return render_template('first_hello.html',name = user)
 
-@app.route('/mongo/')
-def mongo_test():
+@app.route('/mongo_test/<stringid>')
+def mongo_test(stringid):
 	client = MongoClient() #default localhost 27017
 	pass_html = list()
 	db = client['database_ui1']
 	posts = db.posts
-	strId = "[" + "STATUS_MESSAGE_WILL_BE_DELETED_24_HOURS" + "]"
+	strId = "[" + stringid + "]"
 	string_posts = posts.find({},{strId:1,'File':1})
 
 	print string_posts
@@ -64,12 +64,21 @@ def mongo_test():
 	print pass_html
 	return render_template('condition.html', result = pass_html)
 
+@app.route('/login',methods = ['POST','GET'])
+def get_stringid():
+	if request.method == 'POST':
+		user = request.form['nm']
+		return redirect(url_for('mongo_test',stringid = user))
+	else:
+		user = request.args.get('nm')
+		return redirect(url_for('mongo_test',stringid = user))
+
 
 #Decorator to add URL Rules
 #app.add_url_rule('/hello/<name>','hello',hello_world)
 
 if __name__== '__main__':
 	app.debug = True
-	#app.run(host='0.0.0.0') #For external clients to access this server
+	app.run(host='0.0.0.0') #For external clients to access this server
 	app.run()
 	app.run(debug = True)
